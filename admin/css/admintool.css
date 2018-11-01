@@ -1,0 +1,229 @@
+.nav-list.nav-list li:first-child::before{
+	margin-left: -12px;
+}
+.nav-list.nav-list li:last-child::before{
+	margin-left: 0;
+}
+.nav-list.nav-list:hover li::before{
+	margin-left: -12px;
+}
+.nav-list.nav-list li:hover::before{
+	margin-left: 0px;
+}
+form{
+	display: block;
+	height: 100%;
+}
+.right-wrap{
+	width: 80%;
+	height: calc(100% - 50px);
+	margin: 25px auto 0;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.right-wrap h3{
+	height: 45px;
+	line-height: 45px;
+	color: white;
+}
+.right-head{
+	margin-bottom: 25px;
+}
+.addtool{
+	justify-content: center;
+	width: 125px;
+	height: 45px;
+	line-height: 45px;
+	background-color: #82A6F5;
+	text-align: center;
+	border-radius: 5px;
+	cursor: pointer;
+	color: white;
+}
+.add-tool-msg{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 450px;
+	background-color: white;
+	box-shadow: 0 0 15px 0 rgba(0, 0, 0, .3);
+	transform: translate(-50%, -50%);
+}
+.add{
+	display: block;
+	font-size: 18px;
+	padding-right: 8px;
+}
+.close{
+	position: absolute;
+	z-index: 4;
+	top: 15px;
+	right: 15px;
+	color: red;
+	font-size: 20px;
+	cursor: pointer;
+}
+.tool-img{
+	position: relative;
+	width: 100%;
+	height: 450px;
+	cursor: pointer;
+}
+.img-iconfont{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 450px;
+	height: 450px;
+	font-size: 120px;
+	color: white;
+	background-color: #ccc;
+}
+.hide-file{
+	position: absolute;
+	z-index: 3;
+	display: block;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+.tool-img:hover .tool-img-bg{
+	opacity: 1;
+}
+.tool-img-bg{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	z-index: 3;
+	width: 100%;
+	height: 100%;
+	font-size: 18px;
+	color: white;
+	opacity: 0;
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, .4);
+	transition: opacity .3s;
+}
+.add-tool-msg img{
+	width: 100%;
+	height: 450px;
+	margin: 0 auto;
+}
+.add-info,
+.add-info form,
+.add-info label{
+	width: 100%;
+}
+.add-info{
+	padding: 20px;
+}
+.add-info p{
+	flex: 2;
+}
+.add-info label{
+	line-height: 35px;
+	margin-bottom: 8px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+}
+.add-info input{
+	flex: 8;
+	border: none;
+}
+.btn{
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
+	text-align: center;
+	border: none;
+	color: white;
+	border-radius: 5px;
+	background-color: #82A6F5;
+	outline: none;
+	cursor: pointer;
+}
+.texteaer.texteaer{
+	display: block;
+	border: none;
+}
+.texteaer p{
+	text-align: left;
+	margin-bottom: 5px;
+}
+.texteaer textarea{
+	display: block;
+	width: 100%;
+	border: 1px solid #ccc;
+}
+.content-nav li,
+.content-list li{
+	height: 45px;
+	line-height: 45px;
+}
+.content-nav{
+	text-align: center;
+	border-radius: 3px 3px 0 0;
+	border-bottom: 1px solid #ccc;
+	background-color: white;
+}
+.content-list-packing{
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	overflow: hidden;
+	border-radius: 0 0 3px 3px;
+	background-color: white;
+}
+.content-list{
+	align-content: baseline;
+	width: calc(100% + 17px);
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.content-list li{
+	width: 100%;
+	height: 45px;
+	text-align: center;
+}
+.content-list li div{
+	height: 45px !important;
+	white-space: nowrap;
+}
+.content-list li:nth-child(2n - 1){
+	background-color: #eee;
+}
+.serial-number,
+.toll-list-user,
+.toolname,
+.addTime,
+.operation{
+	flex: 1;
+	color: black;
+}
+.tool-address,
+.toolmsg{
+	flex: 2;
+	color: black;
+}
+.operation div{
+	cursor: pointer;
+	margin: 0 10px;
+}
+.operation div:hover{
+	color: #FF534D;
+}
+.operation{
+	justify-content: center;
+	padding: 0 20px;
+}
+
+
+
+/* Vue动画 */
+.fade-enter, .fade-leave-to { opacity: 0;}
+.fade-enter-active, .fade-leave-active{ transition: opacity .3s;}

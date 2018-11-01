@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>多学技能平台</title>
+	<link rel="stylesheet" href="./css/index.css">
+	<link rel="stylesheet" href="./css/global.css">
+	<link rel="stylesheet" href="./css/iconfont.css">
+	<link rel="stylesheet" href="./css/admintool.css">
+	<script src='./script/jq.js'></script>
+	<script src='./script/vue.js'></script>
+</head>
+<body>
+	<div class="wrap flex" v-cloak>
+		<div class="content-left">
+			<div class="usermsg">
+				<img src="./img/head.jpg" class="user-head" alt="">
+				<div class="user flex">
+					<p class="login-username"> {{this.username}} </p>
+					<p class="logout" @click='logout'>注销</p>
+				</div>
+			</div>
+			<ul class="nav-list">
+				<li><a href="./index.html">首页</a></li>
+				<li><a href="#">管理工具</a></li>
+			</ul>
+		</div>
+		<div class="content-right">
+			<div class="right-wrap">
+				<div class="right-head justify">
+					<h3>管理工具</h3>
+					<div class="addtool flex" @click="showToolAdd"><span class="iconfont add">&#xe61e;</span>New tool</div>
+				</div>
+				<transition name='fade'>
+					<div class="add-tool-msg" v-if='isAdd'>
+						<div class="close iconfont" @click='closeToolMsg'>&#xe608;</div>
+						<form class="forms">
+							<div class="tool-img">
+								<div class="tool-img-bg">上传图片</div>
+								<input type="file" name="file" class="hide-file" @change='addTollImg' id="file">
+								<div class="iconfont img-iconfont" v-if='!img'>&#xe624;</div>
+								<img :src="img === null ? '' : img" alt="">
+							</div>
+							<div class="add-info">
+								<label class="flex">
+									<p>工具名称</p>
+									<input type="text" name="tool_name" v-model='modify.toolName'>
+								</label>
+								<label class="flex">
+									<p>工具地址</p>
+									<input type="text" name="tool_address" v-model='modify.toolAddRess'>
+								</label>
+								<label class="texteaer">
+									<p>工具说明</p>
+									<textarea name="tool_msg" class="tool_text" cols="30" rows="10" v-model='modify.toolMsg'></textarea>
+								</label>
+								<input type="button" @click='addToolBase' class="btn" value="Add">
+							</div>
+						</form>
+					</div>
+				</transition>
+				<ul class="content-nav flex">
+					<li class='serial-number'>序号</li>
+					<li class='toll-list-user'>用户</li>
+					<li class='toolname'>工具名称</li>
+					<li class='tool-address'>工具地址</li>
+					<li class='toolmsg'>工具描述</li>
+					<!-- <li class='addTime'>添加时间</li> -->
+					<li class='operation'>操作</li>
+				</ul>
+				<div class="content-list-packing">
+					<ul class="content-list flex" v-if='GetTooList'>
+						<li class='flex' v-for='(item, index) in GetTooList' :key='item.id'>
+							<div class='serial-number'>{{ index + 1 }}</div>
+							<div class='toll-list-user'>{{ item.users }}</div>
+							<div class='toolname'> {{ item.tool_name }} </div>
+							<div class='tool-address'> {{ item.tool_location }} </div>
+							<div class='toolmsg'> {{ item.tool_des }} </div>
+							<!-- <div class='addTime'> {{ item.addTime }} </div> -->
+							<div class='operation flex'>
+								<div class='iconfont modify' @click='showToolModify(item)' title='修改'>&#xe765;</div>
+								<div class='iconfont delete' @click='deleteToolList(item.id, index)' title='删除'>&#xe608;</div>
+							</div>
+					  	</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		let app = new Vue({
+			el: ".wrap",
+			data: {
+				username: null,
+				isAdd: null,
+				img: null,
+				GetTooList: null,
+				modify: {
+					toolName: '',
+					toolAddRess: '',
+					toolMsg: ''
+				}
+			},
+			methods: {
+				getLoginFlag: function () {	// 获取登陆状态(是否登录)
+					_this = this;
+					$.get({
+						url: 'http://10.21.40.155:9999/checkLogin',
+						xhrFields:{
+							withCredentials: true
+						},
+						success:res=> {
+							if(res.code===201){
+								location.href = './login.html';
+							}else{
+								this.username=res.msg.username;
+							}
+						}
+					});
+				},
+				getToolList: function () {	// 渲染工具列表
+					_tihs = this;
+					$.get({
+						url: 'http://10.21.40.155:9999/getOnlyTool',
+						xhrFields:{
+							withCredentials: true
+						},
+						success:res=> {
+							if(res.code===200){
+								this.GetTooList=res.msg;
+							}
+						}
+					});
+				},
+				logout: function () {
+					$.get({
+						url: 'http://10.21.40.155:9999/logout',
+						xhrFields:{
+							withCredentials: true
+						},
+						success (res) {
+							alert(res.msg);
+							if (res.msg === "注销成功") location.href = './login.html'; 
+						}
+					});
+				},
+				showToolAdd: function () {	
+					this.isAdd = 'add';
+				},
+				showToolModify: function (item) {	// 点击modify按钮的时候, 显示出工具信息
+					console.log(item);
+					this.isAdd = 'modify';
+					this.modify = {	
+									toolId: item.id,
+									toolName: item.toolname,
+									toolAddRess: item.addres,
+									toolMsg: item.toolmsg,
+								}
+					this.img = item.toolimg;
+				},
+				closeToolMsg: function () {  // 工具信息/添加工具面板的关闭按钮清除信息
+					this.isAdd = false;
+					this.img = null;
+					this.modify.toolName = '';
+					this.modify.toolAddRess = '';
+					this.modify.toolMsg = '';
+					console.log(1);
+				},
+				addTollImg: function (ev) {	// 上传图片
+					let _this = this;
+					let file = ev.target.files[0];
+					let files = new FileReader();
+
+					files.readAsDataURL(file);
+					files.onload = (e) => {
+						_this.img = e.target.result;
+					}
+				},
+				addToolBase: function () {
+					_this = this;
+					let getToolData = this.modify;
+					if (this.isAdd === 'add') {	// 添加工具
+						let formData = new FormData(document.querySelector('form'));
+						$.ajax({
+							url: 'http://10.21.40.155:9999/addTool',
+							type:'post',
+							data: formData,
+							cache:false,
+							contentType:false,
+							processData:false,
+							xhrFields:{
+								withCredentials: true
+							},
+							success (res) {
+								alert(res.msg);
+								if (res.code === 200) {
+									_this.getToolList();
+									getToolData.toolName = '';
+									getToolData.toolAddRess = '';
+									getToolData.toolMsg = '';
+									_this.isAdd = false;
+									_this.img = null;
+								}
+							},
+							error (error) {
+								alert(error);
+							}
+						});
+					}
+					if (this.isAdd === 'modify') {	// 修改工具信息
+						let _tihs = this;
+						let getToolData = this.modify;
+						let formData=new FormData();
+						
+						formData.append('tool_id',getToolData.toolId);
+						formData.append('tool_name',getToolData.toolName);
+						formData.append('tool_location',getToolData.toolAddRess);
+						formData.append('tool_des',getToolData.toolMsg);
+						formData.append('file',document.getElementById('file').files[0]);
+						$.post({
+							url: 'http://10.21.40.155:9999/modifyTool',
+							
+							data:formData,
+							cache:false,
+							contentType:false,
+							processData:false,
+							xhrFields:{
+								withCredentials: true
+							},
+							success (res) {
+								alert(res.msg);
+								if (res.code === 200) {
+									_this.getToolList();
+									getToolData.toolName = '';
+									getToolData.toolAddRess = '';
+									getToolData.toolMsg = '';
+									_this.isAdd = false;
+									_this.img = null;
+								}
+							},
+							error (error) {
+								alert(error);
+							}
+						});
+					}
+				},
+				deleteToolList: function (id, index) {	//  删除工具
+					_this = this;
+					// let formData=new FormData();
+						
+					// formData.append('tool_id',getToolData.toolId);
+					$.get({
+						url: 'http://10.21.40.155:9999/delteTool',
+						data: {
+							id: id
+						},
+						success (res) {
+							alert(res.msg);
+							if (res.code === 200) _this.GetTooList.splice(index, 1);
+						}
+					});
+				}
+			},
+			mounted: function () {
+				this.getLoginFlag();
+				this.getToolList();
+			}
+		});
+
+	</script>
+</body>
+</html>

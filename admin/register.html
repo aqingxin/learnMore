@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/login.css">
+	<link rel="stylesheet" href="./css/iconfont.css">
+	<link rel="stylesheet" href="./css/global.css">
+	<script src="./script/global.js"></script>
+	<script src='./script/jq.js'></script>
+</head>
+<body>
+	<div class="wrap">
+		<div class="usermsg">
+			<div class="usermsg-head">
+				<h3 class="login"><a href="./login.html" class="iconfont back">&#xe647;</a><span>Register</span></h3>
+			</div>
+			 <form id="forms">
+			 	<label for="#">
+			 		<h3>User Name</h3>
+			 		<input type="text" name="username">
+			 	</label>
+			 	<label for="#">
+			 		<h3>Pass Word</h3>
+			 		<input type="password" name="password">
+			 	</label>
+			 	<label for="#">
+			 		<h3>Repeat</h3>
+			 		<input type="password" name="repeat_password">
+			 	</label>
+			 	<input type="button" value="Resister" class="btn">
+			 </form>
+		</div>
+	</div>
+	<script>
+		getNode('.btn').onclick = () => {
+			$.post({
+				url: 'http://10.21.40.155:9999/register',
+				data: $('#forms').serialize(),
+				success (res) {
+					if(res.code===200){
+						alert('注册成功');
+						location.href = './login.html';
+					}else{
+						alert(res.msg);
+					}
+					// if (res === '注册成功') location.href = './login.html';
+				},
+				error (error) {
+					alert(error);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

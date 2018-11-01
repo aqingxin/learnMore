@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/login.css">
+	<link rel="stylesheet" href="./css/global.css">
+	<link rel="stylesheet" href="./css/iconfont.css">
+	<script src="./script/jq.js"></script>
+</head>
+<body>
+	<div class="wrap">
+		<div class="usermsg">
+			<div class="usermsg-head">
+				<h3 class="login"><a href="./index.html" class="iconfont back">&#xe647;</a><span>Login</span></h3>
+			</div>
+			 <form>
+			 	<label for="#">
+			 		<h3>User Name</h3>
+			 		<input type="text" name="username">
+			 	</label>
+			 	<label for="#">
+			 		<h3>Pass Word</h3>
+			 		<input type="password" name="password">
+			 	</label>
+			 	<div class="target-register">
+			 		<a href="./register.html">New here? Sign up</a>
+			 	</div>
+			 	<input type="button" value="Login" class="btn">
+			 </form>
+		</div>
+	</div>
+	<script>
+		$('.btn').on('click', () => {
+			$.post({
+				url: 'http://10.21.40.155:9999/login',
+				data: $('form').serialize(),
+				xhrFields:{
+					withCredentials: true
+				},
+				success (res) {
+					// alert(res);
+					// if (res === '用户名不存在, 请注册!') location.href = './register.html';
+					// if (res === '登陆成功')  location.href = './index.html';
+					console.log(res)
+					if(res.code===200){
+						alert(res.msg);
+						location.href = './index.html';
+					}else{
+						alert(res.msg);
+					}
+				},
+				error (error) {
+					// alert(error);
+					console.log(error)
+				}
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>多学技能平台</title>
+	<link rel="stylesheet" href="./css/index.css">
+	<link rel="stylesheet" href="./css/global.css">
+	<script src='./script/jq.js'></script>
+	<script src='./script/vue.js'></script>
+</head>
+<body>
+	<div class="wrap flex" v-cloak>
+		<div class="content-left">
+			<div class="usermsg">
+				<img src="./img/head.jpg" class="user-head" alt="">
+				<div class="user flex">
+					<p class="login-username">{{ username }}</p>
+					<p class="logout" @click='logout'>注销</p>
+				</div>
+			</div>
+			<ul class="nav-list">
+				<li><a href="#">首页</a></li>
+				<li><a href="admintool.html">管理工具</a></li>
+			</ul>
+		</div>
+		<div class="content-right center">
+			<div class="scroll-x-hide">
+				<ul class="content-list card-list">
+					<li class="default">
+						<img src='./img/head.jpg' alt='' />
+						<div class='toolmsg'>
+							<div class='toolname'></div>
+							<div class='addres'></div>
+							<div class='toolText'></div>
+							<div class='toolText'></div>
+							<div class="addTime"></div>
+						</div>
+					</li>
+					<li v-for='item in toolList' :key='item.id'>
+						<img :src="'http://10.21.40.155:9999/uploadImg/'+item.tool_img" alt='' />
+						<div class='toolmsg'>
+							<div class='toolname'> <span>名称:</span>{{ item.tool_name }}</div>
+							<div class='addres'><span>地址:</span>{{ item.tool_location }} </div>
+							<div class='toolText'><span>说明:</span>{{ item.tool_des }}</div>
+						</div>
+				    </li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		let app = new Vue({
+			el: ".wrap",
+			data: {
+				username: '未登录',
+				toolList: null
+			},
+			methods: {
+				getLoginState () {
+					let _this = this;
+					$.get({
+						url: 'http://10.21.40.155:9999/checkLogin',
+						xhrFields:{
+							withCredentials: true
+						},
+						success:res=> {
+							if(res.code===201){
+								location.href = './login.html';
+							}else{
+								this.username=res.msg.username;
+							}
+							
+						}
+					});
+				},
+				getToolList () {
+					_this = this;
+					$.get({
+						url: 'http://10.21.40.155:9999/gettool',
+						success:res=> {
+							if(res.code===200){
+								this.toolList=res.msg;
+								
+							}
+						}
+					});
+				},
+				logout () {
+					$.get({
+						url: 'http://10.21.40.155:9999/logout',
+						xhrFields:{
+							withCredentials: true
+						},
+						success (res) {
+							alert(res.msg);
+							if (res.msg === "注销成功") location.href = './login.html'; 
+						}
+					});
+				},
+			},
+			mounted () {
+				this.getLoginState();
+				this.getToolList();
+			}
+		});
+
+	</script>
+</body>
+</html>

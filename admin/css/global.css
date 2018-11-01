@@ -1,0 +1,50 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+img{
+	display: block;
+	border: none;
+}
+a{
+	text-decoration: none;
+}
+ul,li{
+	list-style: none;
+}
+img{
+	display: block;
+}
+input{
+	outline: none;
+}
+textarea{
+	resize: none;
+	outline: none;
+}
+html,body{
+	height: 100%;
+}
+[v-cloak] {
+    display: none !important;
+}
+.flex{
+	display: flex;
+}
+.justify{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.hide{
+	display: none;
+}
+.show.show{
+	opacity: 1;
+}
